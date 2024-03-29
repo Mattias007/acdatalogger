@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
-    "mqtt": "^5.5.0",
-    "mysql2": "^3.9.3"
+    "mqtt": "^5.5.0"
   }
 }

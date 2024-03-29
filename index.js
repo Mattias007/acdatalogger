@@ -1,11 +1,10 @@
 const express = require('express');
 const mqtt = require('mqtt');
-const mysql =  require('mysql2/promise');
 const app = express();
 const port = 3000;
 
 // MQTT broker URL
-const mqttBrokerUrl = 'mqtt://127.0.0.1';
+const mqttBrokerUrl = 'mqtt://192.168.1.25';
 
 const mqttClient = mqtt.connect(mqttBrokerUrl,{
     username: "mattias",
@@ -20,23 +19,16 @@ mqttClient.on('connect', () => {
     
 
 });
-mqttClient.on('message', (topic, message) => {
-    executeQuery(message.toString())
+mqttClient.on('message',(topic, message) => {
+    message = JSON.parse(message.toString())
+    const name = message.name
+    delete(message.id)
+    delete(message.name)
+    console.log(`http://85.89.32.58/input/post?node=${name}&fulljson=${JSON.stringify(message)}&apikey=17bda09eb30a8f93c375d009a6066c2c`)
+   fetch(`http://85.89.32.58/input/post?node=${name}&fulljson=${JSON.stringify(message)}&apikey=17bda09eb30a8f93c375d009a6066c2c`).then(r => {
+   })
+
 });
 
 
-async function executeQuery(data) {
-    data = JSON.parse(data)
-
-    const connection = await mysql.createConnection({
-        host: 'd110073.mysql.zonevs.eu',
-        user: 'd110073_acuser',
-        password: 'u7Drmx]?8f#HVVt',
-        database: 'd110073_acdata'
-    });
-
-await connection.execute(
-'INSERT INTO ACdata (deviace_id, temp, hum, command, overide, targettemp) VALUES (?, ?, ?, ?, ?, ?)',
-[data.id, data.temp,data.hum,data.command,data.overide,data.targettemp]);
-}
 
