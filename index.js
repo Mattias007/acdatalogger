@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 
 // MQTT broker URL
-const mqttBrokerUrl = 'mqtt://192.168.1.25';
+const mqttBrokerUrl = 'mqtt://127.0.0.1';
 
 const mqttClient = mqtt.connect(mqttBrokerUrl,{
     username: "mattias",
